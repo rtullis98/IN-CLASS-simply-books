@@ -1,33 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Image from 'next/image';
-// import { useAuth } from '../utils/context/authContext';
+import { Button } from 'react-bootstrap';
+import { useAuth } from '../utils/context/authContext';
+import { signOut } from '../utils/auth';
 
-export default function User({
-  photoURL, displayName, email, lastSignInTime,
-}) {
+export default function UserProfile() {
+  const { user } = useAuth();
   return (
-    <div className="user">
-      {photoURL && <Image src={photoURL} alt={displayName} />}
-      <div className="user-info">
-        <h2>{displayName}</h2>
-        <p>{email}</p>
-        <p>Last Login: {lastSignInTime}</p>
-      </div>
+    <div>
+      <Image src={user.photoURL} alt="userURL" width="100px" height="100px" />
+      <h1>Name: {user.displayName}</h1>
+      <h3>Email: {user.email}</h3>
+      <h4>Last Login: {user.metadata.lastSignInTime}</h4>
+      <Button type="button" size="lg" className="copy-btn" onClick={signOut}>
+        Sign Out
+      </Button>
     </div>
   );
 }
-
-User.propTypes = {
-  photoURL: PropTypes.string,
-  displayName: PropTypes.string,
-  email: PropTypes.string,
-  lastSignInTime: PropTypes.string,
-};
-
-User.defaultProps = {
-  photoURL: '',
-  displayName: '',
-  email: '',
-  lastSignInTime: '',
-};
